@@ -28,8 +28,8 @@ class Play(models.Model):
     actors = models.ManyToManyField(Actor)
 
     def __str__(self):
-        #genre_names = ', '.join(genre.name for genre in self.genres.all())
-        #actor_names = ', '.join(actor.full_name for actor in self.actors.all())
+        # genre_names = ', '.join(genre.name for genre in self.genres.all())
+        # actor_names = ', '.join(actor.full_name for actor in self.actors.all())
         return f"{self.title}"
 
 
@@ -53,10 +53,7 @@ class Performance(models.Model):
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.created_at} {self.user}"
@@ -65,14 +62,14 @@ class Reservation(models.Model):
 class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
-    performance = models.ForeignKey(
-        Performance,
-        on_delete=models.CASCADE
-    )
-    reservation = models.ForeignKey(
-        Reservation,
-        on_delete=models.CASCADE
-    )
+    performance = models.ForeignKey(Performance, on_delete=models.CASCADE)
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Ticket for {self.performance.plays} (Row: {self.row}, Seat: {self.seat} by {self.reservation.user})"
+        return (
+            f"Ticket for "
+            f"{self.performance.plays}"
+            f" (Row: {self.row},"
+            f" Seat: {self.seat}"
+            f" by {self.reservation.user})"
+        )
